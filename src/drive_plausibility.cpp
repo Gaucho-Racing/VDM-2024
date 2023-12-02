@@ -1,9 +1,13 @@
 #include <Arduino.h>
 #include <imxrt.h>
-#include <main.h>
-#include <fakenodes.h>
+#include "machine.h"
+//#include <fakenodes.h>
 
-int drive_plausibility(iCANflex &Car){
+int d_plaus(iCANflex &Car){
+    /*
+    needs more logic.
+    change all fakenodes to actual nodes.
+    */
 
     // set current to 0;
 
