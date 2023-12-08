@@ -22,9 +22,9 @@ static volatile bool Critical_Systems_Fault(iCANflex& Car) {
     if ((Car.SENSORS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
     if ((Car.PEDALS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
     if ((Car.CHARGER.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
-    if ((Car.BMS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.ACU.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
     i
-    if (car.BMS.getTemp() > CRITICAL_CELL_TEMP){
+    if (car.ACU.getCellTemp_n() > CRITICAL_CELL_TEMP){
         crit_codes.push_back(102);
         return true;
     }
