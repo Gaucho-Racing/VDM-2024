@@ -2,6 +2,7 @@
 #include <imxrt.h>
 #include <cstdint>
 #include "main.h"
+#include "constants.h"
 #include "iCANflex.h"
 #include "machine.h"
 
