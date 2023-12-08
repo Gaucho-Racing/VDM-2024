@@ -113,8 +113,32 @@ State error(iCANflex& Car, vector<int>& switches, State prevState, volatile bool
     if(errorCheck(Car)) {
         return ERROR;
     }
+    else if (Critical_Systems_Fault(Car)){
+        if("VCU CAN BUS RECEIVER FAILURE not sure how to check"){
+            handle_ISR_VCU_CAN_BUS(Car);
+        }
+        if (Car.ACU.getMaxCellTemp() <= Car.ACU.getCellTemp_n()){
+            handle_ISR_CELL_TEMP(Car);
+        }
+        if (Car.Inverter.getThrottleIn()  < 0.05){
+            handle_ISR_CELL_TEMP(Car);
+        }
+        if(Car.Inverter.getMotorTemp() >= Car.Inverter.getMotorTempLim()){
+            handle_ISR_MOTOR_TEMP(Car);
+        }
+        if(???){
+            handle_ISR_CURRENT_LIMIT(Car);
+        }
+        if(???){
+            handle_ISR_IMD_FAULT(Car);
+        }
+        if(???){
+            handle_ISR_CRASHED(Car);
+        }
+    }
     else {
         float throttle = (Car.PEDALS.getAPPS1() + Car.PEDALS.getAPPS2())/2;
+
         if(throttle < 0.05) {
             return prevState;
         }

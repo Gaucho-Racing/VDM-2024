@@ -16,8 +16,29 @@ static volatile bool ECU_Startup_Rejection(iCANflex& Car) {
 }
 
 static volatile bool Critical_Systems_Fault(iCANflex& Car) {
-    return false; //implement later
+    if("VCU CAN BUS RECEIVER FAILURE not sure how to check"){ 
+        return true;
+    }
+    if (Car.ACU.getMaxCellTemp() <= Car.ACU.getCellTemp_n()){
+        return true;
+    }
+    if (Car.Inverter.getThrottleIn()  < 0.05){
+        return true;
+    }
+    if(Car.Inverter.getMotorTemp() >= Car.Inverter.getMotorTempLim()){
+        return true;
+    }
+    if("CURRENT LIMIT"){
+        return true;
+    }
+    if("FALUT"){
+        return true;
+    }
+    if("CRASH"){
+        return true;
+    }
     Serial.println("CRITICAL SYSTEMS FAULT");
+    return false; //implement later
 }
 
 static volatile void Warning_Systems_Fault(iCANflex& Car) {
