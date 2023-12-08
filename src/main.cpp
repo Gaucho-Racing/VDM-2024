@@ -18,21 +18,28 @@ State sendToError(volatile State currentState, volatile bool (*erFunc)(iCANflex&
    prevState = currentState; 
    return ERROR;
 }
+static volatile bool ISR_VCU_CAN_BUS(iCANflex& Car) {
+    if ((Car.INVERTER.getAge()) > MAX_CAN_DURATION || 
+    (Car.VDM.getAge()) > MAX_CAN_DURATION ||
+    (Car.PEDALS.getAge()) > MAX_CAN_DURATION || 
+    (Car.WHEELS.getAge()) > MAX_CAN_DURATION || 
+    (Car.GPS.getAge()) > MAX_CAN_DURATION || 
+    (Car.ACU.getAge()) > MAX_CAN_DURATION || 
+    (Car.BCM.getAge()) > MAX_CAN_DURATION || 
+    (Car.Dash.getAge()) > MAX_CAN_DURATION || 
+    (Car.Energy_Meter.getAge()) > MAX_CAN_DURATION) return true;
+    Serial.println("100: CRITICAL: VCU CAN BUS RECIEVE FAILURE");
+}
 
 // Error functions
-void handle_ISR_VCU_CAN_BUS(iCANflex& Car) {
+static volatile bool handle_ISR_VCU_CAN_BUS(iCANflex& Car) {
     // handle this error
-    if("VCU CAN BUS RECEIVER FAILURE not sure how to check"){ // "..." := filler quotes, not code
-        // log some kind of critical error
-        // do sth
-    }
+    if()
+    Serial.println("ECU REJECTED STARTUP");
 }
 
 void handle_ISR_CELL_TEMP(iCANflex& Car) {
-    if (Car.ACU.getMaxCellTemp() <= Car.ACU.getCellTemp_n()){
-        // log some kind of critical error
-        // shut down
-    }
+    return Car.ACU.getMaxCellTemp() <= Car.ACU.getCellTemp_n();
 }
 
 void handle_ISR_THROTTLE_SIGNAL(iCANflex& Car) {
@@ -56,8 +63,8 @@ void handle_ISR_CURRENT_LIMIT(iCANflex& Car) {
 }
 
 void handle_ISR_IMD_FAULT(iCANflex& Car) {
-        if("IMD_FAULT"){
-
+    if("IMD_FAULT"){
+    }
     return;
 }
 
@@ -108,7 +115,7 @@ void setup() {
     state = OFF; 
 
     // Attach ISR for errors (currently not "prioritized")
-    attachErrorISR(100, &handle_ISR_VCU_CAN_BUS, 1); 
+    attachErrorISR(100, &ISR_VCU_CAN_BUS, 1); 
     attachErrorISR(102, &handle_ISR_CELL_TEMP, 2); 
     // attachErrorISR(103, &ISR_CURRENT_TO_DTI_MC, 3);  --> not sure to include?
     attachErrorISR(104, &handle_ISR_THROTTLE_SIGNAL, 4); 

@@ -18,12 +18,16 @@ static volatile bool ECU_Startup_Rejection(iCANflex& Car) {
 
 static volatile bool Critical_Systems_Fault(iCANflex& Car) {
     std::set<int> crit_codes;
-    if ((Car.DTI.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
-    if ((Car.SENSORS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.INVERTER.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
     if ((Car.PEDALS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
-    if ((Car.CHARGER.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.VDM.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.WHEELS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.GPS.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
     if ((Car.ACU.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
-    i
+    if ((Car.BCM.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.Dash.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+    if ((Car.Energy_Meter.getAge()) > MAX_CAN_DURATION) crit_codes.push_back(100);
+
     if (car.ACU.getCellTemp_n() > CRITICAL_CELL_TEMP){
         crit_codes.push_back(102);
         return true;
